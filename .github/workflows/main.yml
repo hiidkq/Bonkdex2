@@ -30,4 +30,8 @@ jobs:
       env:
         BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
       run: |
+        if [ -z "${{ secrets.BOT_TOKEN }}" ]; then
+          echo "Error: BOT_TOKEN is not set."
+          exit 1
+        fi
         python bot.py
