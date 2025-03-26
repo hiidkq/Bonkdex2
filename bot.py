@@ -1,3 +1,9 @@
+import os
+import discord
+import random
+from discord import app_commands
+from discord.ui import View
+
 # Monster data
 monsters = {
     "Ghazt": {
@@ -107,24 +113,11 @@ async def spawn_monsters_periodically():
 async def setup_hook():
     bot.loop.create_task(spawn_monsters_periodically())
 
-import os
-import discord
-
 # Ensure the bot token is retrieved correctly
 TOKEN = os.getenv('BOT_TOKEN')
 
 if not TOKEN:
     raise ValueError("No BOT_TOKEN found in environment variables")
-
-# Rest of your bot code
-intents = discord.Intents.default()
-bot = discord.Client(intents=intents)
-tree = app_commands.CommandTree(bot)
-
-@bot.event
-async def on_ready():
-    print(f'Logged in as {bot.user}')
-    await tree.sync()
 
 # Ensure your token is valid and correctly set
 bot.run(TOKEN)
