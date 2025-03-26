@@ -113,11 +113,10 @@ async def spawn_monsters_periodically():
         await spawn_monster(channel)
         await asyncio.sleep(random.randint(900, 1200))  # Random sleep between 15 and 20 minutes
 
-# Run the bot
-async def main():
+@bot.event
+async def setup_hook():
     bot.loop.create_task(spawn_monsters_periodically())
-    await bot.start(TOKEN)
 
+# Run the bot
 if __name__ == "__main__":
-    # Start the bot with asyncio
-    asyncio.run(main())
+    bot.run(TOKEN)
