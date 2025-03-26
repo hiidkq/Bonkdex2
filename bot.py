@@ -11,11 +11,11 @@ TOKEN = os.getenv('BOT_TOKEN')
 # Monster data
 monsters = {
     "Ghazt": {
-        "image": "https://media.discordapp.net/attachments/1354151223409901700/1354151962589003786/Untitled421_20250220170540.png?ex=67e4e88a&is=67e3970a&hm=068526b959c33b601ce005ffedddc8a55eb4bc61dc00211f4c579337c92af7a8&=&format=webp&quality=lossless&width=569&height=569",
+        "image": "https://media.discordapp.net/attachments/1354151223409901700/1354151962589003786/Untitled421_20250220170540.png",
         "emoji": "<:Ghazt:1354497826985480213>"
     },
     "Grumpyre": {
-        "image": "https://media.discordapp.net/attachments/1354151223409901700/1354151963171885227/Untitled422_20250223155434.png?ex=67e4e88a&is=67e3970a&hm=652293ebd4edccf3d2498084e107e417a71b20a9595f2c0433f626c35dcee8f9&=&format=webp&quality=lossless&width=569&height=569",
+        "image": "https://media.discordapp.net/attachments/1354151223409901700/1354151963171885227/Untitled422_20250223155434.png",
         "emoji": "<:Grumpyre:1354498036012810365>"
     }
 }
@@ -37,8 +37,8 @@ async def on_ready():
 # Slash command to configure the channel
 @tree.command(name="config-channel", description="Configure where monsters will spawn.")
 async def config_channel(interaction: discord.Interaction, channel_id: str):
-    # Only allow admin to configure channel
-    if interaction.user.guild_permissions.administrator:
+    # Only allow the specific admin user to configure channel
+    if interaction.user.id == 1034541436315652126 or interaction.user.guild_permissions.administrator:
         # Store the channel id in your config (e.g., in a file or database)
         await interaction.response.send_message(f"Monsters will spawn in <#{channel_id}>!")
     else:
@@ -114,5 +114,10 @@ async def spawn_monsters_periodically():
         await asyncio.sleep(random.randint(900, 1200))  # Random sleep between 15 and 20 minutes
 
 # Run the bot
-bot.loop.create_task(spawn_monsters_periodically())
-bot.run(TOKEN)
+async def main():
+    bot.loop.create_task(spawn_monsters_periodically())
+    await bot.start(TOKEN)
+
+if __name__ == "__main__":
+    # Start the bot with asyncio
+    asyncio.run(main())
